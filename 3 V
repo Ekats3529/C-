@@ -1,0 +1,23 @@
+#include<iostream>  
+#include<cmath>  
+#include<iomanip>  
+using namespace std;
+const double EPS = 1e-12;
+
+
+double f(double x) {
+    return ((x + 4) / (x * x - 2)) + sqrt(x * x * x - 1);
+}
+
+int main()
+{
+    double a, b, h;
+    cin >> a >> b;
+    cin >> h;
+    cout << fixed << setprecision(12);
+    for (double i = a; i <= b + EPS; i += h, cout << endl) {
+        if ((i < 1) || (i == sqrt(2)) || (i == -sqrt(2))) cout << i << " " << "Error";
+        else cout << i << " " << f(i);
+    }
+    return 0;
+}
