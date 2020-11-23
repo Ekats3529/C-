@@ -1,0 +1,21 @@
+#include<iostream> 
+#include<cmath> 
+using namespace std;
+
+float f(float x) {
+    if (abs(x) < 3) return sin(x);
+    else if (abs(x) < 9 && abs(x) >= 3) return (sqrt(x * x + 1) / sqrt(x * x + 5));
+    else if (abs(x) >= 9) return (sqrt(x * x + 1) - sqrt(x * x + 5));
+}
+
+int main()
+
+{
+    int a, b, h;
+    cin >> a >> b;
+    cin >> h;
+    for (int i = a; i <= b; i += h, cout << endl) {
+        cout << i << " " << f(i);
+    }
+    return 0;
+}
