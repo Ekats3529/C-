@@ -1,0 +1,33 @@
+#include<iostream>  
+#include<cmath>  
+#include<iomanip>  
+using namespace std;
+const double EPS = 1e-12;
+
+
+double f(double temp, double x) {
+    return temp * (x / 3);
+}
+
+
+int main()
+{
+    int i = 1, n;
+    double e, b = 0.9, h = 0.1, s;
+    cin >> e;
+    cout << fixed << setprecision(12);
+    double temp;
+    cout << "x\t\t" << "F(x)\t\t" << "n" << endl;
+    for (double x = 0; x <= b + EPS; x += 0.1, cout << endl) {
+        s = 1;
+        n = 1;
+        temp = 1;
+        while (temp >= e) {
+            n++;
+            temp = f(temp, x);
+            s += temp;
+        }
+        cout << x << " " << s << " " << n;
+    }
+    return 0;
+}
