@@ -1,0 +1,20 @@
+#include<iostream>  
+#include<cmath>  
+#include<iomanip>  
+using namespace std;
+
+int main()
+{
+    long long k;
+    double x, s = 1.;
+    long long temp = 1;
+    cin >> k >> x;
+    double m = x;
+    for (int n = 1; n <= k; n++) {
+        temp *= (n + 1);
+        m = m * (x * x);
+        s *= (1 + m / temp);
+    }
+    cout << fixed << setprecision(12) << s;
+    return 0;
+}
