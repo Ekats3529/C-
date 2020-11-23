@@ -1,0 +1,20 @@
+#include<iostream> 
+#include<cmath> 
+#include<iomanip> 
+using namespace std;
+
+
+int main()
+
+{
+    int i = 1, n;
+    double e, s = 0, a = 1 / sqrt(3);
+    cin >> e;
+    while (fabs(a) >= e) {
+        s += a;
+        i++;
+        a *= (1 /sqrt(3));
+    }
+    cout << fixed << setprecision(12) << s;
+    return 0;
+}
