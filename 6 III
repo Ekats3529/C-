@@ -26,11 +26,9 @@ int main()
         int m = mas[0][i];
         int k = 0;
         for (int j = 1; j < n; j++) {
-            if (j + i > n - 1) {
                 if (mas[j][i] < m) {
                     m = mas[j][i];
                     k = j;
-                }
             }
         }
         mas[k][i] = 0;
