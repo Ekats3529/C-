@@ -1,0 +1,45 @@
+#include<iostream> 
+#include<cmath> 
+#include<iomanip> 
+using namespace std;
+
+int main()
+{
+    int n;
+    cin >> n;
+    int** mas = new int* [n];
+    for (int i = 0; i < n; i++) {
+        mas[i] = new int[n];
+    }
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cin >> mas[i][j];
+        }
+    }
+    for (int i = 0; i < n; i++, cout << endl) {
+        for (int j = 0; j < n; j++, cout << " ") {
+            cout << mas[i][j];
+        }
+    }
+    cout << endl;
+    for (int i = 0; i < n; i++) {
+        int m = mas[0][i];
+        int k = 0;
+        for (int j = 1; j < n; j++) {
+            if (j + i > n - 1) {
+                if (mas[j][i] < m) {
+                    m = mas[j][i];
+                    k = j;
+                }
+            }
+        }
+        mas[k][i] = 0;
+    }
+
+    for (int i = 0; i < n; i++, cout << endl) {
+        for (int j = 0; j < n; j++, cout << " ") {
+            cout << mas[i][j];
+        }
+    }
+    return 0;
+}
