@@ -16,7 +16,7 @@ int main()
     cin >> h;
     cout << fixed << setprecision(12);
     for (double i = a; i <= b + EPS; i += h, cout << endl) {
-        if ((i < 1) || (i == sqrt(2)) || (i == -sqrt(2))) cout << i << " " << "Error";
+        if ((i < 1) || (abs(i * i - 2) < EPS)) cout << i << " " << "Error";
         else cout << i << " " << f(i);
     }
     return 0;
