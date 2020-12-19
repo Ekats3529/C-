@@ -1,0 +1,20 @@
+#include <iostream>
+#include <fstream> 
+#include <string>
+using namespace std;
+
+int main()
+{
+	ifstream in("f.txt");
+	ofstream out("g.txt");
+	ofstream out1("h.txt");
+	int a;
+	while (in >> a) {
+		if (a >= 0) out1 << a << endl;
+		else out << a << endl;
+	}
+	in.close();
+	out.close();
+	out1.close();
+	return 0;
+}
