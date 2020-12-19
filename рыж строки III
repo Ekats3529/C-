@@ -1,0 +1,20 @@
+#include<iostream>
+#include <windows.h>
+#include<string>
+
+using namespace std;
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    SetConsoleOutputCP(1251);
+    SetConsoleCP(1251);
+    string s, s1 = "";
+    getline(cin, s);
+    int l = s.length();
+    s[0] = toupper(s[0]);
+    for (int i = 1; i < l; i++) {
+        if (s[i - 1] == ' ') s[i] = toupper(s[i]);
+    }
+    cout << s;
+    return 0;
+}
