@@ -1,0 +1,42 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+struct point {
+	int x, y, z;
+};
+
+double l(point a, point b) {
+	return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2) + pow(a.z - b.z, 2));
+}
+int main()
+{
+	point m[100];
+	int n;
+	cout << "Vvedite kolichestvo tochek v mnozhestve ";
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		cin >> m[i].x >> m[i].y >> m[i].z;
+	}
+	double p = 0;
+	int a1 = 0, b1 = 0, c1 = 0;
+	for (int i = 0; i < n; i++) {
+		point a = m[i];
+		for (int j = i + 1; j < n; j++) {
+			point b = m[j];
+			for (int g = j + 1; g < n; g++) {
+				point c = m[g];
+				if (l(a, b) + l(b, c) + l(a, c) > p) {
+					p = l(a, b) + l(b, c) + l(a, c);
+					a1 = i;
+					b1 = j; 
+					c1 = g;
+				}
+			}
+		}
+	}
+	cout << m[a1].x << " " << m[a1].y << " " << m[a1].z << endl;
+	cout << m[b1].x << " " << m[b1].y << " " << m[b1].z << endl;
+	cout << m[c1].x << " " << m[c1].y << " " << m[c1].z << endl;
+	return 0;
+}
