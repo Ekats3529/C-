@@ -1,0 +1,50 @@
+#include<fstream>
+#include<iostream>
+#include<iomanip>
+#include<string>
+using namespace std;
+
+ifstream in("input.txt");
+ofstream out("output.txt");
+
+struct stud {
+	string surname, name, secondname;
+	int course, groupe, result;
+	void print();
+};
+
+void stud::print() {
+	out << surname << " " << name << " " << secondname << " "
+		<< course << " " << groupe << " " << result << endl;
+
+}
+
+int main() {
+	stud m[20];
+	int n, k = 0;
+	while (in.peek() != EOF) {
+		in >> m[k].surname;
+		in >> m[k].name;
+		in >> m[k].secondname;
+		in >> m[k].course;
+		in >> m[k].groupe;
+		in >> m[k].result;
+		k++;
+	}
+	cout << "Vvedite normativ";
+	cin >> n;
+	for (int i = 0; i < k; i++) {
+		if (m[i].result > n) {
+			for (int j = i; j < k - 1; j++)
+				m[j] = m[j + 1];
+			k--;
+			i--;
+		}
+	}
+	for (int i = 0; i < k; i++) {
+		m[i].print();
+	}
+	in.close();
+	out.close();
+	return 0;
+}
