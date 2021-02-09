@@ -1,0 +1,36 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+
+int main() {
+    string s, s1 = "";
+    bool f = true;
+    char s2[100];
+    long int m = 0;
+    getline(cin, s);
+    int l = s.length();
+    for (int i = 0; i < l; i++) {
+        if (s[i] == ' ') {
+            if (f){
+                strcpy_s(s2, s1.c_str());
+                if (atol(s2) % 2 != 0) m += atol(s2);
+            }
+            s1 = "";
+        }
+        else {
+            if (!(isalpha(s[i]))) {
+                s1 += s[i];
+                f = true;
+            }
+            else
+                f = false;
+        }
+    }
+    if (f) {
+        strcpy_s(s2, s1.c_str());
+        if (atol(s2) % 2 != 0) m += atol(s2);
+    }
+    cout << m;
+    return 0;
+}
