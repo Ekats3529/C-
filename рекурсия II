@@ -1,0 +1,17 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+double f(int i, double x, int n) {
+	//cout << i << endl;
+	if (i < n) return x / (i + f(i + 1, x, n));
+	return x / (i + x);
+}
+int main()
+{
+	int n;
+	double x;
+	cin >> n >> x;
+	cout << fixed << setprecision(12) << f(1, x, n);
+	return 0;
+}
