@@ -1,0 +1,29 @@
+#include<iostream>  
+#include<cmath>  
+#include<iomanip>  
+using namespace std;
+
+class Time
+{
+	int hours, minutes, seconds;
+
+	void set_current_time(int h, int m, int s) 
+	{
+		hours = h;
+		minutes = m;
+		seconds = s;
+	}
+
+	void show_current_time()
+	{
+		cout << hours << ":" << minutes << ":" << seconds << endl;
+	}
+
+
+};
+
+int main()
+{
+
+	return 0;
+}
