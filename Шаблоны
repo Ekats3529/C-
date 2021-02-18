@@ -1,0 +1,57 @@
+#include<iostream>  
+#include<cmath>  
+#include<iomanip>  
+using namespace std;
+
+template <typename X> void printArray(X **a, int n, int m)
+{
+	for (int i = 0; i < n; i++, cout << endl)
+		for (int j = 0; j < m; j++) cout << a[i][j] << " ";
+	cout << endl;
+}
+
+template <typename X> void putArray(X** a, int n, int m)
+{
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < m; j++) cin >> a[i][j];
+	cout << endl;
+}
+
+template <typename X> X AverageV(X** a, int n, int m)
+{
+	X sum = 0;
+	int k = 0;
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < m; j++) 
+		{
+			if (a[i][j] < 0) {
+				k++;
+				sum += a[i][j];
+			}
+		}
+	if (sum != 0) return sum / k;
+	return 0;
+}
+
+int main()
+{
+	int n, m;
+	cin >> n >> m;
+	int** a = new int* [n];
+	for (int i = 0; i < n; i++) {
+		a[i] = new int[m];
+	}
+	putArray(a, n, m);
+	printArray(a, n, m);
+	cout << AverageV(a, n, m) << endl;
+
+	double** b = new double* [n];
+	for (int i = 0; i < n; i++) {
+		b[i] = new double[m];
+	}
+	putArray(b, n, m);
+	printArray(b, n, m);
+	cout << AverageV(b, n, m) << endl;;
+
+	return 0;
+}
