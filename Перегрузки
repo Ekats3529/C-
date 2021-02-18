@@ -1,0 +1,33 @@
+#include<iostream>  
+#include<cmath>  
+#include<iomanip>  
+using namespace std;
+const double EPS = 1e-12;
+
+float F(float x, float a, float b) {
+	if (x < 93) return a + b * x;
+	else if (x <= 120 && x >= 93) return b - a * x;
+	else if (x > 120) return a* b* x;
+}
+void F(float x, float &y, float a, float b) {
+	if (x < 93) y= a + b * x;
+	else if (x <= 120 && x >= 93) y = b - a * x;
+	else if (x > 120) y = a * b * x;
+}
+
+int main()
+{
+	float a, b, h, y;
+	cin >> a >> b;
+	cin >> h;
+	cout << fixed << setprecision(12);
+	for (float i = a; i <= b + EPS; i += h, cout << endl) {
+		cout << i << " " << F(i, a, b);
+	}
+	cout << endl;
+	for (float i = a; i <= b + EPS; i += h, cout << endl) {
+		F(i, y, a, b);
+		cout << i << " " << y;
+	}
+	return 0;
+}
