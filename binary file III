@@ -1,0 +1,37 @@
+
+#include<fstream>
+#include<iostream>
+using namespace std;
+
+int main() {
+	ofstream out("f.dat", ios::binary);
+	int n;
+	double a, ans;
+	cout << "n = ";
+	cin >> n;
+	if (n <= 0) {
+		cout << "Error. Rerun the program"; return 0;
+	}
+	for (int i = 0; i < n; i++) {
+		cin >> a;
+		out.write((char*)&a, sizeof(a));
+	}
+	out.close();
+	ifstream in("f.dat", ios::binary);
+	if (in.peek() != EOF) {
+		in.read((char*)&a, sizeof(double));
+		ans = a;
+		in.seekg(sizeof(double));
+	}
+	if (in.peek() != EOF) {
+		in.seekg(sizeof(double), ios::cur);}
+	while (in.peek() != EOF) {
+		in.read((char *)&a, sizeof(double));
+		if (a > ans) ans = a;
+		in.seekg(sizeof(double), ios::cur);
+	}
+	in.close();
+	cout << ans;
+	return 0;
+}
+//1.5 0.5 -0.1 -0.0002 15.4 18.6
