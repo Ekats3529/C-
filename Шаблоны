@@ -17,7 +17,7 @@ template <typename X> void putArray(X** a, int n, int m)
 	cout << endl;
 }
 
-template <typename X> X AverageV(X** a, int n, int m)
+template <typename X> double AverageV(X** a, int n, int m)
 {
 	X sum = 0;
 	int k = 0;
