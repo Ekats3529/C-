@@ -7,54 +7,49 @@ class Time
 {
 private:
 	int hours, minutes, seconds;
-	int hours_new, min_new, sec_new;
 public:
-	void set_current_time(int h, int m, int s)
+
+	Time() : hours(0), minutes(0), seconds(0) {}
+	Time(int hours, int minutes, int seconds) : hours(hours), minutes(minutes), seconds(seconds) {}
+
+
+	void set_time(int h, int m, int s)
 	{
-		hours = h;
-		minutes = m;
-		seconds = s;
+		this->hours = (hours + h + (minutes + m + (seconds + s) / 60) / 60) % 24;
+		this->minutes = (minutes + m + (seconds + s) / 60) % 60;
+		this->seconds = (seconds + s) % 60;
 	}
 
-	void show_current_time()
+	
+
+	void show_time()
 	{
 		cout << hours << ":" << minutes << ":" << seconds << endl;
 	}
 
-	void set_new_time(int hour, int min, int sec)
+	void moment(Time & some_time)
 	{
-		sec_new = (seconds + sec) % 60;
-		min_new = (minutes + min + (seconds + sec) / 60) % 60;
-		hours_new = (hours + hour + (minutes + min + (seconds + sec) / 60) / 60) % 24;
-	}
-
-	void show_new_time()
-	{
-		cout << hours_new << ":" << min_new << ":" << sec_new << endl;
-	}
-
-	void moment()
-	{
-		int hour = 0, minute = 0, second;
-		if (sec_new < seconds) { second = 60 - seconds + sec_new; minute -= 1;}
-		else{ second = sec_new - seconds; }
-		if (min_new < minutes) { minute += 60 - minutes + min_new; hour -= 1; }
-		else { minute += min_new - minutes; }
-		if (hours_new < hours) { hour += 24 - hours + hours_new;}
-		else { hour += hours_new - hours; }
+		int hour = 0, minute = 0, second = 0;
+		if (some_time.seconds < seconds) { second = 60 - seconds + some_time.seconds; minute -= 1; }
+		else { second = some_time.seconds - seconds; }
+		if (some_time.minutes < minutes) { minute += 60 - minutes + some_time.minutes; hour -= 1; }
+		else { minute += some_time.minutes - minutes; }
+		if (hours < hours) { hour += 24 - hours + hours; }
+		else { hour += some_time.hours - hours; }
 		cout << hour << ":" << minute << ":" << second << endl;
 	}
-
 };
 
 int main()
 {
-	Time;
 	Time time;
-	time.set_current_time(12, 38, 42);
-	time.show_current_time();
-	time.set_new_time(0, 36, 41);
-	time.show_new_time();
-	time.moment();
+	time.show_time();
+	time.set_time(12, 38, 42);
+	time.show_time();
+
+	Time new_time(12, 38, 42);
+	new_time.set_time(0, 36, 41);
+	new_time.show_time();
+	time.moment(new_time);
 	return 0;
 }
