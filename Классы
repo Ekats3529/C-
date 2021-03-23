@@ -1,0 +1,99 @@
+#include<iostream>  
+#include<cmath>  
+#include<iomanip>  
+using namespace std;
+
+class Time
+{
+private:
+	int hours, minutes, seconds;
+public:
+
+	Time() : hours(0), minutes(0), seconds(0) {}
+	Time(int hours, int minutes, int seconds) : hours(hours), minutes(minutes), seconds(seconds) {}
+
+	friend Time operator++(Time& ref){
+		int h = 1, m = 1, s = 1;
+		ref.hours = (ref.hours + h + (ref.minutes + m + (ref.seconds + s) / 60) / 60) % 24;
+		ref.minutes = (ref.minutes + m + (ref.seconds + s) / 60) % 60;
+		ref.seconds = (ref.seconds + s) % 60;
+		return ref;
+	}
+
+	friend Time operator++(Time& ref, int d) {
+		Time temp(ref.hours, ref.minutes, ref.seconds);
+		int h = 1, m = 1, s = 1;
+		ref.hours = (ref.hours + h + (ref.minutes + m + (ref.seconds + s) / 60) / 60) % 24;
+		ref.minutes = (ref.minutes + m + (ref.seconds + s) / 60) % 60;
+		ref.seconds = (ref.seconds + s) % 60;
+		return temp;
+	}
+
+	void set_time(int h, int m, int s)
+	{
+		this->hours = h;//(hours + h + (minutes + m + (seconds + s) / 60) / 60) % 24;
+		this->minutes = m;// (minutes + m + (seconds + s) / 60) % 60;
+		this->seconds = s;// (seconds + s) % 60;
+	}
+
+	void after_moment(int h, int m, int s)
+	{
+		int hour, min, sec;
+		hour = (hours + h + (minutes + m + (seconds + s) / 60) / 60) % 24;
+		min = (minutes + m + (seconds + s) / 60) % 60;
+		sec = (seconds + s) % 60;
+
+		cout << hour << ":" << min << ":" << sec << endl;
+
+	}
+
+	void show_time()
+	{
+		//if (hours < 10)
+		cout << hours << ":" << minutes << ":" << seconds << endl;
+	}
+
+	void moment(Time& some_time)
+	{
+		int hour = 0, minute = 0, second = 0;
+		if (some_time.seconds <= seconds) { second = 60 - seconds + some_time.seconds; minute -= 1; }
+		else { second = some_time.seconds - seconds; }
+		if (some_time.minutes <= minutes) { minute += 60 - minutes + some_time.minutes; hour -= 1; }
+		else { minute += some_time.minutes - minutes; }
+		if (some_time.hours <= hours) { hour += 24 - some_time.hours + hours; }
+		else { hour += some_time.hours - hours; }
+		if (second == 60) {
+			second = 0;
+			minute++;
+		}
+		if (minute == 60) {
+			minute = 0;
+			hour++;
+		}
+		if (hour == 24) {hour = 0;}
+		cout << "between " << hours << ":" << minutes << ":" << seconds << " and " << some_time.hours << ":" << some_time.minutes << ":" << some_time.seconds;
+		cout << " // " <<hour << ":" << minute << ":" << second << endl;
+	}
+};
+
+int main()
+{
+	Time time, time2, time3;
+	//time.show_time();
+	time.set_time(23, 59, 59);
+	//time.show_time();
+	//time.after_moment(0, 36, 41);
+	time.show_time();
+	//time2 = ++time;
+	time3 = time++;
+	time.show_time();
+	//time2.show_time();
+	time3.show_time();
+
+	//Time new_time(12, 38, 42);
+	//new_time.show_time();
+	//new_time.set_time(13, 39, 44);
+	//new_time.show_time();
+	//time.moment(new_time);
+	return 0;
+}
