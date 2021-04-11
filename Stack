@@ -1,0 +1,72 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+
+class Stack
+{
+private:
+    struct Element
+    {
+        string inf;
+        Element* next;
+        Element(string x, Element* p) : inf(x), next(p) {}
+    };
+    Element* head;
+public:
+    Stack() :head(0) {}
+    bool Empty() { return head == 0; }
+    string Pop() 
+    {
+        if (Empty()) { return "Empty stack"; }
+        Element* r = head;
+        string i = r->inf;
+        head = r->next;
+        delete r;
+        return i;
+    }
+    void Push(string word) 
+    {
+        head = new Element(word, head);
+    }
+    string Top()
+    {
+        if (Empty()) { return "Empty stack"; }
+        else {
+            return head->inf;
+        }
+    }
+};
+
+
+
+int main() 
+{
+    Stack t, t1;
+    string word, key_word, word1;
+    int count = 0;
+    ifstream in("input.txt");
+    ofstream out("output.txt");
+    while (in >> word) {
+        t.Push(word);
+    }
+    in.close();
+    key_word = t.Pop();
+    t1.Push(key_word);
+    while (!t.Empty()) {
+        word1 = t.Pop();
+        if (word1 == key_word) {count++;}
+        else {t1.Push(word1);}
+    }
+    while (!t1.Empty()) {
+        out << t1.Pop() << "\n";
+    }
+    out << "count: " << count << "\n";
+    out.close();
+    return 0;
+}
