@@ -1,0 +1,73 @@
+#include "QueueException.cpp"
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+
+using namespace std;
+template <class Item>
+
+class Queue
+{
+private:
+    struct Element
+    {
+        Item inf;
+        Element* next;
+        Element(Item x) : inf(x), next(0) {}
+    };
+    Element* head, * tail;
+public:
+    Queue() :head(0), tail(0){}
+    bool Empty() { return head == 0; }
+    Item Get()
+    {
+        if (Empty()) { throw QueueException("QueueException: get - queue empty"); }
+        else {
+            Element* t = head;
+            Item i = t->inf;
+            head = t->next;
+            if (head == NULL) { tail = NULL; }
+            delete t;
+            return i;
+        }
+    }
+    void Put(Item data)
+    {
+        Element* t = tail;
+        tail = new Element(data);
+        if (!head) { head = tail; }
+        else { t->next = tail; }
+    }
+};
+
+
+
+int main()
+{
+    Queue<string> t;
+    string word, key_word, word1;
+    int count = 0;
+    ifstream in("input.txt");
+    ofstream out("output.txt");
+    while (in >> word) {
+        key_word = word;
+        t.Put(word);
+    }
+    in.close();
+    while (!(t.Empty())) {
+        word1 = t.Get();
+        if (word1 != key_word)
+        {
+            out << word1 << "\n";
+        }
+        else { count++; }
+    }
+    out << key_word << "\n";
+    out << "count: " << count - 1 << "\n";
+    out.close();
+    return 0;
+}
