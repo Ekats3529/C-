@@ -1,0 +1,14 @@
+#include<string>
+using namespace std;
+
+class ListException
+{
+private:
+	string str;
+public:
+	ListException(string msg) : str(msg) {}
+	string what()
+	{
+		return str;
+	}
+};
