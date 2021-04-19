@@ -1,0 +1,136 @@
+#include "ListException.cpp"
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+ifstream in("input.txt");
+ofstream out("output.txt");
+
+template <class Item> class List
+{
+private:
+    struct Element
+    {
+        Item inf;
+        Element* next;
+        Element(Item x) : inf(x), next(0) {}
+    };
+    Element* head;
+    int size;
+    Element* Find(int index) {
+        if ((index < 1) || (index > size))
+        {
+            return NULL;
+        }
+        else
+        {
+            Element* cur = head;
+            for (int i = 1; i < index; i++)
+            {
+                cur = cur->next;
+            }
+            return cur;
+        }
+    }
+public:
+    List() :head(0), size(0) {}
+    ~List() {
+        while (!Empty()) { Remove(1); }
+    }
+    bool Empty() { return head == 0; }
+    int GetLength() { return size; }
+    Item Get(int index)
+    {
+        if ((index < 1) || (index > size))
+        {
+            throw ListException("ListException: get - list error");
+        }
+        else {
+            Element* r = Find(index);
+            Item i = r->inf;
+            return i;
+        }
+    }
+    void Insert(int index, Item data)
+    {
+        if ((index < 1) || (index > size + 1))
+        {
+            throw ListException("ListException: get - list error");
+        }
+        else {
+            Element* newPtr = new Element(data);
+            size = GetLength() + 1;
+            if (index == 1)
+            {
+                newPtr->next = head;
+                head = newPtr;
+            }
+            else {
+                Element* prev = Find(index - 1);
+                newPtr->next = prev->next;
+                prev->next = newPtr;
+            }
+        }
+    }
+    void Remove(int index) {
+        if ((index < 1) || (index > size))
+        {
+            throw ListException("ListException: get - list error");
+        }
+        else {
+            Element* cur;
+            --size;
+            if (index == 1)
+            {
+                cur = head;
+                head = head->next;
+            }
+            else {
+                Element* prev = Find(index - 1);
+                cur = prev->next;
+                prev->next = cur->next;
+            }
+            cur->next = NULL;
+            delete cur;
+        }
+    }
+    void Print() {
+        for (Element* cur = head; cur != NULL; cur = cur->next) {
+            out << cur->inf << endl;
+        }
+    }
+};
+
+
+
+int main()
+{
+    List<string> list, list_ans;
+    string word, key_word, word1;
+    int mas[100];
+    int count = 0;
+    while (in >> word) {
+        list.Insert(list.GetLength() + 1, word);
+    }
+    in.close();
+    
+    key_word = list.Get(list.GetLength());
+    for (int i = 1; i < list.GetLength(); i++) {
+        word1 = list.Get(i);
+        if (word1 == key_word) {
+            count++;
+            mas[count - 1] = i;
+        }
+    }
+    for (int i = 0; i < count; i++) {
+        list.Remove(mas[i] - i);
+    }
+    list.Print();
+    out << "count: " << count << "\n";
+    out.close();
+    return 0;
+}
