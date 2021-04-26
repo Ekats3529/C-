@@ -1,0 +1,36 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+
+int main()
+{
+    //A 
+    list<int> l = {1, 2, 3, 4, 1};
+    if (l.front() < l.back()) {
+        l.pop_back();
+    }
+    else {
+        l.pop_front();
+    }
+    list <int> ::iterator it = l.begin();
+    while (it != l.end()) {
+        cout << (*it) << " ";
+        it++;
+    }
+    cout << endl;
+    // B
+    vector<int> v = {1, 2, 3, 4, 5};
+    int key = v[v.size() - 1];
+    v[0] = -key;
+    v[1] = -key;
+    for (int i = 0; i < v.size(); i++) { cout << v[i] << " "; }
+
+
+    return 0;
+}
