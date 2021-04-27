@@ -1,0 +1,53 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <string>
+#include <iterator>
+#include <algorithm>
+using namespace std;
+
+string temp[100];
+int main()
+{
+    set<string> story, exclam_n_quest, ans;
+    string s;
+    getline(cin, s);
+    int i = 0;
+    while( i < s.length()) {
+        int k = 0;
+        while (s[i] != '.' || s[i] != '!' || s[i] != '?') {
+            string word = "";
+            while (s[i] != ' ' || s[i] != '.' || s[i] != '!' || s[i] != '?') {
+                word += s[i];
+                i++;
+            }
+            temp[k] = word;
+            k++;
+            i++;
+        }
+        if (s[i] == '.') {
+            for (int j = 0; j < k; i++) {
+                story.insert(temp[j]); 
+            }
+            i++;
+        }
+        if (s[i] == '!' || s[i] == '?') {
+            for (int j = 0; j < k; i++) {
+                exclam_n_quest.insert(temp[j]);
+            }
+            i++;
+        }
+    }
+    set_difference(exclam_n_quest.begin(), exclam_n_quest.end(), story.begin(), story.end(), inserter(ans, ans.begin()));
+    set<string> ::iterator it = ans.begin();
+    while (it != ans.end()) {
+        cout << *it << " ";
+        it++;
+    }
+
+
+    return 0;
+}
