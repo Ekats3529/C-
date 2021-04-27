@@ -5,6 +5,7 @@
 #include <list>
 #include <set>
 #include <string>
+#include <iterator>
 #include <algorithm>
 using namespace std;
 
@@ -12,24 +13,25 @@ using namespace std;
 int main()
 {
     set<char> lower;
-    set<char> upper;
+    set<char> upper, ans;
     int n;
     string s;
     cin >> n;
     for (int t = 0; t < n + 1; t++) {
         getline(cin, s);
         for (int i = 0; i < s.length(); i++) {
-            if (isupper(s[i])) { upper.insert(s[i]); }
+            if (isupper(s[i])) { upper.insert(tolower(s[i])); }
             if (islower(s[i])) { lower.insert(s[i]); }
         }
     }
-    set<char> ::iterator it = lower.begin();
-    set<char> ::iterator it = upper.begin();
-    while (it != lower.end()) {
-        cout << *it << endl;
+
+    set_difference(lower.begin(), lower.end(), upper.begin(), upper.end(), inserter(ans, ans.begin()));
+    set<char> ::iterator it = ans.begin();
+    while (it != ans.end()) {
+        cout << *it << " ";
         it++;
     }
 
-    
+
     return 0;
 }
