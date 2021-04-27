@@ -16,36 +16,38 @@ int main()
     string s;
     getline(cin, s);
     int i = 0;
-    while( i < s.length()) {
+    while (i < s.length()) {
         int k = 0;
-        while (s[i] != '.' || s[i] != '!' || s[i] != '?') {
+        while (s[i] != '.' && s[i] != '!' && s[i] != '?' && i < s.length()) {
             string word = "";
-            while (s[i] != ' ' || s[i] != '.' || s[i] != '!' || s[i] != '?') {
+            while (s[i] != ' ' && s[i] != '.' && s[i] != '!' && s[i] != '?') {
                 word += s[i];
                 i++;
             }
             temp[k] = word;
             k++;
-            i++;
+            if (s[i] != '.' && s[i] != '!' && s[i] != '?') { i ++ ; }
         }
+        //cout << k << s[i] << endl;
+        //for (int j = 0; j < k; j++) {cout << temp[j] << endl;}
         if (s[i] == '.') {
-            for (int j = 0; j < k; i++) {
-                story.insert(temp[j]); 
+            for (int j = 0; j < k; j++) {
+                story.insert(temp[j]);
             }
             i++;
         }
         if (s[i] == '!' || s[i] == '?') {
-            for (int j = 0; j < k; i++) {
+            for (int j = 0; j < k; j++) {
                 exclam_n_quest.insert(temp[j]);
             }
             i++;
         }
     }
-    set_difference(exclam_n_quest.begin(), exclam_n_quest.end(), story.begin(), story.end(), inserter(ans, ans.begin()));
-    set<string> ::iterator it = ans.begin();
-    while (it != ans.end()) {
-        cout << *it << " ";
-        it++;
+    set_difference(story.begin(), story.end(), exclam_n_quest.begin(), exclam_n_quest.end(), inserter(ans, ans.begin()));
+    set<string> ::iterator it1 = ans.begin();
+    while (it1 != ans.end()) {
+        cout << *it1 << " ";
+        it1++;
     }
 
 
