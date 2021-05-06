@@ -1,0 +1,68 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <iomanip>
+using namespace std;
+
+ifstream in("input.txt");
+ofstream out("output.txt");
+
+struct student {
+    string surname, name, secname;
+    int year, group, res[5];
+    void print();
+    bool operator > (const student& s) const
+};
+
+
+
+void student::print() {
+    out << setw(3) << group << setw(15) << surname << setw(15) << name << setw(15) << secname;
+    out << setw(6) << year << " ";
+    for (int i = 0; i < 5; i++) {
+        out << res[i] << " ";
+    }
+    out << endl;
+
+}
+
+
+
+void shell_sort(student *s, int n) {
+    int d = n / 2;
+    while (d >= 1)
+    {
+        for (int i = d; i < n; i++) {
+            int j = i;
+            while ((j >= d) && (s[j - d] > s[j])) {
+                //swap()
+            }
+        }
+    }
+}
+
+int main()
+{
+    student s[30];
+    int n = 0;
+    while (in.peek() != EOF){
+        in >> s[n].group;
+        in >> s[n].surname;
+        in >> s[n].name;
+        in >> s[n].secname;
+        in >> s[n].year;
+        for (int i = 0; i < 5; i++) {
+            in >> s[n].res[i];
+        }
+        //s[0].print();
+        n++;
+    }
+    shell_sort(s, n);
+    for (int i = 0; i < n; i++) {
+        s[i].print();
+    }
+    in.close();
+    out.close();
+    return 0;
+}
