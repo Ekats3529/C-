@@ -1,0 +1,106 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <iomanip>
+using namespace std;
+
+ifstream in("input.txt");
+ofstream out("output.txt");
+
+struct student {
+    string surname, name, secname;
+    int year, group, res[5];
+    void print();
+};
+
+
+
+void student::print() {
+    out << group << " " << surname << " " << name << " " << secname;
+    out << " " << year << " ";
+    for (int i = 0; i < 5; i++) {
+        out << res[i] << " ";
+    }
+    out << endl;
+
+}
+
+
+
+void shell_sort_by_name(student *s, int n) {
+    int d = n / 2;
+    while (d >= 1)
+    {
+        for (int i = d; i < n; i++) {
+            int j = i;
+            while ((j >= d) && (s[j - d].surname >= s[j].surname)) {
+                bool f = false;
+                if ((s[j - d].surname == s[j].surname) && (s[j - d].name >= s[j].name)) {
+                    if ((s[j - d].name == s[j].name) && (s[j - d].secname >= s[j].secname)) {
+                        if ((s[j - d].secname == s[j].secname) && (s[j - d].year > s[j].year)) {
+                                swap(s[j - d], s[j]);
+                                j = j - d;
+                                f = true;
+                        }
+                        if (!f)
+                        {
+                            swap(s[j - d], s[j]);
+                            //cout << j - d << " " << j << endl;
+                            j = j - d;
+                            f = true;
+                        }
+                    }
+                    if (!f)
+                    {
+                        swap(s[j - d], s[j]);
+                        //cout << j - d << " " << j << endl;
+                        j = j - d;
+                        f = true;
+                    }
+                }
+                if (!f)
+                {
+                    swap(s[j - d], s[j]);
+                    //cout << j - d << " " << j << endl;
+                    j = j - d;
+                    f = true;
+                }
+                
+            }
+        }
+        d = d / 2;
+    }
+}
+void shell_sort_by_year(student* s, int n) 
+{
+
+}
+
+int main()
+{
+    student s[30];
+    int n = 0;
+    while (in.peek() != EOF){
+        in >> s[n].group;
+        in >> s[n].surname;
+        in >> s[n].name;
+        in >> s[n].secname;
+        in >> s[n].year;
+        for (int i = 0; i < 5; i++) {
+            in >> s[n].res[i];
+        }
+        //s[0].print();
+        n++;
+    }
+    n--;
+    //cout << n;
+    shell_sort_by_name(s, n);
+    shell_sort_by_year(s, n);
+    for (int i = 0; i < n; i++) {
+        s[i].print();
+    }
+    in.close();
+    out.close();
+    return 0;
+}
