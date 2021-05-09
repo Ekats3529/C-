@@ -1,0 +1,26 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <iomanip>
+using namespace std;
+
+class Software {
+    string inf;
+
+};
+class FreeSoftware : Software {
+
+};
+class SharewareSoftware : Software {
+
+};
+class ProprietarySoftware : Software {
+
+};
+
+int main()
+{
+    
+    return 0;
+}
