@@ -26,62 +26,43 @@ void student::print() {
 
 }
 
-
-
-void shell_sort_by_name(student *s, int n) {
-    int d = n / 2;
-    while (d >= 1)
-    {
-        for (int i = d; i < n; i++) {
-            int j = i;
-            while ((j >= d) && (s[j - d].surname >= s[j].surname)) {
-                bool f = false;
-                if ((s[j - d].surname == s[j].surname) && (s[j - d].name >= s[j].name)) {
-                    if ((s[j - d].name == s[j].name) && (s[j - d].secname >= s[j].secname)) {
-                        if ((s[j - d].secname == s[j].secname) && (s[j - d].year > s[j].year)) {
-                                swap(s[j - d], s[j]);
-                                j = j - d;
-                                f = true;
-                        }
-                        if (!f)
-                        {
-                            swap(s[j - d], s[j]);
-                            //cout << j - d << " " << j << endl;
-                            j = j - d;
-                            f = true;
-                        }
-                    }
-                    if (!f)
-                    {
-                        swap(s[j - d], s[j]);
-                        //cout << j - d << " " << j << endl;
-                        j = j - d;
-                        f = true;
-                    }
-                }
-                if (!f)
+void shell_sort(student* s, int n) {
+    int i, j, incr = n / 2;
+    while (incr > 0) {
+        for (i = incr; i < n; i++) {
+            j = i - incr;
+            while (j >= 0) {
+                if (s[j].surname > s[j + incr].surname)
                 {
-                    swap(s[j - d], s[j]);
-                    //cout << j - d << " " << j << endl;
-                    j = j - d;
-                    f = true;
+                    swap(s[j + incr], s[j]);
+                    j = j - incr;
                 }
-                
+                else if ((s[j].surname == s[j + incr].surname) && (s[j].name > s[j + incr].name)) {
+                    swap(s[j + incr], s[j]);
+                    j = j - incr;
+                }
+                else if ((s[j].name == s[j + incr].name) && (s[j].secname > s[j + incr].secname)) {
+                    swap(s[j + incr], s[j]);
+                    j = j - incr;
+                }
+                else if ((s[j].secname == s[j + incr].secname) && (s[j].year < s[j + incr].year)) {
+                    swap(s[j + incr], s[j]);
+                    j = j - incr;
+                }
+                else {
+                    j--;
+                }
             }
         }
-        d = d / 2;
+        incr = incr / 2;
     }
-}
-void shell_sort_by_year(student* s, int n) 
-{
-
 }
 
 int main()
 {
     student s[30];
     int n = 0;
-    while (in.peek() != EOF){
+    while (in.peek() != EOF) {
         in >> s[n].group;
         in >> s[n].surname;
         in >> s[n].name;
@@ -95,8 +76,7 @@ int main()
     }
     n--;
     //cout << n;
-    shell_sort_by_name(s, n);
-    shell_sort_by_year(s, n);
+    shell_sort(s, n);
     for (int i = 0; i < n; i++) {
         s[i].print();
     }
