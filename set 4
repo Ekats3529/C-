@@ -1,0 +1,96 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <utility>
+#include <functional>
+#include <string>
+#include <iterator>
+#include <algorithm>
+using namespace std;
+
+
+ifstream in("input.txt");
+
+set<int> first, second, exist_f, exist_s, unions, ans;
+
+void create_set(string str, int n) {
+    if (n > 1) {
+        first.clear();
+        exist_f.clear();
+        first.insert(second.begin(), second.end());
+        exist_f.insert(exist_s.begin(), exist_s.end());
+        second.clear();
+        exist_s.clear();
+        ans.clear();
+        unions.clear();
+        int l = str.length();
+        for (int i = 0; i < l; i++) {
+            string s1;
+            while (str[i] != ' ' && i < l) {
+                s1 += str[i];
+                i++;
+            }
+            int k = stoi(s1);
+            if (second.count(k)) { exist_s.insert(k); }
+            second.insert(k);
+        }
+        set_union(second.begin(), second.end(), exist_f.begin(), exist_f.end(), inserter(unions, unions.begin()));
+        set_difference(first.begin(), first.end(), unions.begin(), unions.end(), inserter(ans, ans.begin()));
+
+    }
+    if (n == 0) {
+        int l = str.length();
+        for (int i = 0; i < l; i++) {
+            string s1;
+            while (str[i] != ' ' && i < l) {
+                s1 += str[i];
+                i++;
+            }
+            int k = stoi(s1);
+            if (first.count(k)) { exist_f.insert(k); }
+            first.insert(k);
+        }
+    }
+    if (n == 1){
+        int l = str.length();
+        for (int i = 0; i < l; i++) {
+            string s1;
+            while (str[i] != ' ' && i < l) {
+                s1 += str[i];
+                i++;
+            }
+            int k = stoi(s1);
+            if (second.count(k)) { exist_s.insert(k); }
+            second.insert(k);
+    }
+
+        set_union(second.begin(), second.end(), exist_f.begin(), exist_f.end(), inserter(unions, unions.begin()));
+        set_difference(first.begin(), first.end(), unions.begin(), unions.end(), inserter(ans,ans.begin()));
+    }
+}
+
+
+
+
+int main()
+{
+    int n = 0;
+    string s;
+    while (in.peek() != EOF) {
+        getline(in, s);
+        create_set(s, n);
+        cout << "for " << n << " - " << n + 1 << ": ";
+        copy(ans.begin(), ans.end(), ostream_iterator<int>(cout, " "));
+        cout << endl;
+        n++;  
+    }
+    
+    if (n == 1) { cout << "invalid number of lines in the file" << endl; return 0; }
+    in.close();
+    return 0;
+
+}
