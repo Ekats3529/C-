@@ -11,9 +11,9 @@ bool Correct(int n) {
     if (n < 2) {
         cout << "Error: the count of numbers must be more than 2. Try again";
     }
-    return (n < 2);
-
+    return (n > 2);
 }
+
 
 
 int main()
@@ -33,6 +33,7 @@ int main()
     for (int i = 0; i < v.size(); i++) { cout << v[i] << " "; }
     cout << endl;
     //B
+    
     int n, num;
     list<int> l;
     cin >> n;
@@ -50,6 +51,8 @@ int main()
     for (list <int> ::iterator i = l.begin(); i != l.end(); i++) {
         cout << (*i) << " ";
     }
-
+    
     return 0;
 }
+//5 4 -100
+//10 20 1000 55 -2 10
