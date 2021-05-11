@@ -3,46 +3,108 @@
 #include <cmath>
 #include <vector>
 #include <list>
+#include <map>
 #include <string>
 #include <algorithm>
 using namespace std;
 
 vector<pair<int, int>> vect;
 int n;
+double a;
+
+double d(int x, int y) { return sqrt(x * x + y * y); }
+void print() {
+    for (auto it : vect) {
+        cout << it.first << " " << it.second << endl;
+    }
+}
 
 void A() {
-    int a;
+    
     cout << "Enter the length of a side: ";
     cin >> a;
-
+    a /= 2;
+    //cout << a;
+    vect.erase(remove_if(vect.begin(), vect.end(), [](pair<int, int> p) {return ((abs(p.second) > a) || (abs(p.first) > a)); }), vect.end());
+    print();
 }
 
 void B() {
-    int cnt = 0;
-    for (auto it : vect) {
-        if (it.first < 0) { cnt++; }
-    }
+    int cnt = count_if(vect.begin(), vect.end(), [](pair<int, int> p) {return p.first < 0 == 0; });
+    cout << "count of points that laying to the left of OY: ";
     cout << cnt << endl;
 }
 
 void C() {
-
-
+    //vector <double> dist;
+    map<pair<int, int>, double> m;
+    for (auto it : vect) {
+        if (it.second < -abs(it.first)) { m[it] = d(it.first, it.second); }
+    }
+    map<pair<int, int>, double> ::iterator res = min_element(m.begin(), m.end(), [](const auto& a, const auto& b) {
+        return a.second < b.second; });
+    if (res != m.end()) {
+        cout << "point: " << res->first.first << " " << res->first.second<< endl;
+        cout << "distance: " << res->second << endl;
+    }
+    else {
+        cout << "No points equal" << endl;
+    }
+}
+bool operator <(const pair<int, int> & lhs, const pair<int, int> & rhs)
+{
+    if (d(lhs.first, lhs.second) > d(rhs.first, rhs.second)) {
+        return true;
+    }
+    else if ((d(lhs.first, lhs.second) == d(rhs.first, rhs.second) && lhs.first < rhs.first)) {
+        return true;
+    }
+    return false;
 }
 
 void D() {
 
-
+    stable_sort(vect.begin(), vect.end(), [](const pair<int, int> lhs, const pair<int, int> rhs) 
+    {if (d(lhs.first, lhs.second) > d(rhs.first, rhs.second))
+    {return true;}
+    else if ((d(lhs.first, lhs.second) == d(rhs.first, rhs.second) && lhs.first < rhs.first)) 
+    {return true;}
+    return false; });
+    print();
 }
 
 int main()
 {
     int x, y;
+    char s;
     cout << "Enter the number of points: ";
     cin >> n;
     for (int i = 0; i < n; i++) {
         cin >> x >> y;
         vect.push_back(make_pair(x, y));
     }
+    cout << "Enter the issue A, B, C or D  ";
+    cin >> s;
+    if (s == 'A') {A();}
+    else if (s == 'B') { B(); }
+    else if (s == 'C') { C(); }
+    else if (s == 'D') { D(); }
+    else { cout << "Error"; }
     return 0;
 }
+
+/*
+* 12
+3 2
+0 0
+5 6
+-7 -8 
+-1 -1 
+-95 15
+65 -3
+1 1
+2 9
+-8 9
+5 5
+9 -2
+ */
