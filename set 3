@@ -26,12 +26,13 @@ int main()
             }
             temp[k] = word;
             k++;
-            if (s[i] != '.' && s[i] != '!' && s[i] != '?') { i ++ ; }
+            if (s[i] != '.' && s[i] != '!' && s[i] != '?') { i++; }
         }
         //cout << k << s[i] << endl;
         //for (int j = 0; j < k; j++) {cout << temp[j] << endl;}
         if (s[i] == '.') {
             for (int j = 0; j < k; j++) {
+                //transform(temp[j].begin(), temp[j].end(), temp[j].begin(), tolower);
                 story.insert(temp[j]);
             }
             i++;
@@ -43,7 +44,7 @@ int main()
             i++;
         }
     }
-    set_difference(story.begin(), story.end(), exclam_n_quest.begin(), exclam_n_quest.end(), inserter(ans, ans.begin()));
+    set_difference(exclam_n_quest.begin(), exclam_n_quest.end(), story.begin(), story.end(), inserter(ans, ans.begin()));
     set<string> ::iterator it1 = ans.begin();
     while (it1 != ans.end()) {
         cout << *it1 << " ";
