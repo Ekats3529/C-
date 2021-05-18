@@ -26,26 +26,20 @@ void student::print() {
 
 }
 
+bool ok(student a, student b) {
+    return a.surname > b.surname || ((a.surname == b.surname) && (a.name > b.name)) ||
+        ((a.name == b.name) && (a.secname > b.secname)) || ((a.secname == b.secname) && (a.year < b.year));
+}
+
+
 void shell_sort(student* s, int n) {
     int i, j, incr = n / 2;
     while (incr > 0) {
         for (i = incr; i < n; i++) {
             j = i - incr;
             while (j >= 0) {
-                if (s[j].surname > s[j + incr].surname)
+                if (ok)
                 {
-                    swap(s[j + incr], s[j]);
-                    j = j - incr;
-                }
-                else if ((s[j].surname == s[j + incr].surname) && (s[j].name > s[j + incr].name)) {
-                    swap(s[j + incr], s[j]);
-                    j = j - incr;
-                }
-                else if ((s[j].name == s[j + incr].name) && (s[j].secname > s[j + incr].secname)) {
-                    swap(s[j + incr], s[j]);
-                    j = j - incr;
-                }
-                else if ((s[j].secname == s[j + incr].secname) && (s[j].year < s[j + incr].year)) {
                     swap(s[j + incr], s[j]);
                     j = j - incr;
                 }
@@ -56,6 +50,42 @@ void shell_sort(student* s, int n) {
         }
         incr = incr / 2;
     }
+}
+
+void bubble_sort(student* s, int n) { //стабильная
+    int i, j;
+    for (i = 0; i < n - 1; i++) {
+        for (j = n - 1; j > i; j--) {
+            if (ok(s[i], s[j]))
+            {
+                swap(s[j], s[i]);
+            }
+        }
+    }
+}
+
+void choice_sort(student* s, int n) { //нестабильная
+    int low, j;
+    for (int i = 0; i < n - 1; i++) {
+        for (j = i + 1; j < n; j++) {
+            if (ok(s[i], s[j])) {
+                swap(s[i], s[j]);
+            }
+        }
+    }
+}
+
+
+void insert_sort(student* s, int n) { //стабильная
+    int j = 0;
+    for (int i = 1; i < n; i++) {
+        j = i;
+        while (j > 0 && ok(s[j - 1], s[j])) {
+            swap(s[j - 1], s[j]);
+            j--;
+        }
+    }
+
 }
 
 int main()
