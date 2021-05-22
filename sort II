@@ -1,0 +1,65 @@
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+
+ifstream in("input.txt");
+ofstream out("output.txt");
+
+
+bool ok(int a, int b, int k) {
+    if (k % 2 != 0) return a < b;
+    return a > b;
+}
+
+
+void insert_sort(int* a, int n, int k) {
+    int j = 0;
+    for (int i = 1; i <= n; i++) {
+        j = i;
+        while (j > 0 && ok(a[j - 1], a[j], k)) {
+            swap(a[j - 1], a[j]);
+            j--;
+        }
+    }
+}
+
+int a[100][100];
+int b[100];
+
+int main()
+{
+    int n, m, i, j;
+    int a[100][100];
+    in >> n >> m;
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < m; j++) {
+            in >> a[i][j];
+        }
+    }
+    for (j = 0; j < m; j++) {
+        for (i = 0; i < n; i++) {
+            b[i] = a[i][j];
+        }
+        insert_sort(b, n, j);
+        for (i = 0; i < n; i++) {
+            a[i][j] = b[i];
+        }
+    }
+    out << n << '\t' << m << '\n';
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < m; j++) {
+            out << setw(5) << a[i][j];
+        }
+        out << '\n';
+    }
+    in.close();
+    out.close();
+    return 0;
+}
