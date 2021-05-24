@@ -1,0 +1,61 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <iomanip>
+using namespace std;
+
+ifstream in("input.txt");
+ofstream out("output.txt");
+
+struct student {
+    string surname, name, secname;
+    int year, group, res[5];
+    void print();
+};
+
+
+
+void student::print() {
+    out << group << " " << surname << " " << name << " " << secname;
+    out << " " << year << " ";
+    for (int i = 0; i < 5; i++) {
+        out << res[i] << " ";
+    }
+    out << endl;
+
+}
+
+bool ok(student a, student b) {
+    return a.surname > b.surname || ((a.surname == b.surname) && (a.name > b.name)) ||
+        ((a.name == b.name) && (a.secname > b.secname)) || ((a.secname == b.secname) && (a.year < b.year));
+}
+
+
+
+
+int main()
+{
+    student s[30];
+    int n = 0;
+    while (in.peek() != EOF) {
+        in >> s[n].group;
+        in >> s[n].surname;
+        in >> s[n].name;
+        in >> s[n].secname;
+        in >> s[n].year;
+        for (int i = 0; i < 5; i++) {
+            in >> s[n].res[i];
+        }
+        n++;
+    }
+    n--;
+    //cout << n;
+    stable_sort(s, s+n, ok);
+    for (int i = n - 1; i > -1; i--) {
+        s[i].print();
+    }
+    in.close();
+    out.close();
+    return 0;
+}
