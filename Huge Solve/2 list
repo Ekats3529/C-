@@ -1,0 +1,133 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+
+using namespace std;
+
+ifstream in("input.txt");
+ofstream out("output.txt");
+
+template <class Item> class DoubleLinkedList
+{
+	struct Element
+	{
+		Item inf;
+		Element* next;
+		Element* prev;
+		Element(Item x) : inf(x), next(0), prev(0) {}
+	};
+	Element* head;
+	Element* tail;
+	int size;
+	Element* Find(int index) {
+		if ((index < 1) || (index > size)) return NULL;
+		else {
+			Element* cur = head;
+			for (int i = 1; i < index; i++)	cur = cur->next;
+			return cur;
+		}
+	}
+public:
+	DoubleLinkedList() : head(0), tail(0), size(0) // конструктор
+	{}
+	~DoubleLinkedList() {// деструктор
+		while (!Empty()) Remove(1);
+	}
+	bool Empty() { return head == 0; } // проверяет список на пустоту
+	int GetLength() { return size; } // возвращает количество элементов в списке
+	Item Get(int index) {// возвращает значение элемента списка по его номеру
+		if ((index < 1) || (index > size)) return -0;
+		else {
+			Element* r = Find(index);
+			Item i = r->inf;
+			return i;
+		}
+	}
+	void InsertLeft(int index, Item data) {// осуществляет вставку элемента слева от элемента с позицией index
+		if ((index < 1) || (index > size + 1)) return;
+		else {
+			Element* newPtr = new Element(data);
+			size = GetLength() + 1; // увеличиваем размерность списка
+			Element* cur = Find(index);// устанавливаем указатель на элемент списка
+			if (cur == NULL) {
+				head = newPtr;
+				tail = newPtr;
+			}
+			else {
+				newPtr->next = cur;
+				newPtr->prev = cur->prev;
+				cur->prev = newPtr;
+				if (cur == head) head = newPtr;
+				else newPtr->prev->next = newPtr;
+			}
+		}
+	}
+	void InsertRight(int index, Item data) {// осуществляет вставку элемента справа от элемента с позицией index
+		if ((index < 1 && head != NULL) || (index > size + 1)) return;
+		else {
+			Element* newPtr = new Element(data);
+			size = GetLength() + 1; // увеличиваем размерность списка
+			Element* cur = Find(index);// устанавливаем указатель на элемент списка
+			if (cur == NULL) {
+				head = newPtr;
+				tail = newPtr;
+			}
+			else {
+				newPtr->next = cur->next;
+				newPtr->prev = cur;
+				cur->next = newPtr;
+				if (cur == tail) tail = newPtr;
+				else newPtr->next->prev = newPtr;
+			}
+		}
+	}
+	void Remove(int index) {	// удаление элемента с номером 
+		if ((index < 1) || (index > size)) return;
+		else {
+			Element* cur = Find(index);// устанавливаем указатель на заданный элемент
+			--size;
+			if (size == 0) {
+				head = NULL;
+				tail = NULL;
+			}
+			else if (cur == head) {
+				head = head->next;
+				head->prev = NULL;
+			}
+			else if (cur == tail) {
+				tail = tail->prev;
+				tail->next = NULL;
+			}
+			else {
+				cur->prev->next = cur->next;
+				cur->next->prev = cur->prev;
+				cur->next = NULL;
+				cur->prev = NULL;
+				delete cur;
+			}
+		}
+	}
+	void PrintLeftToRight() {
+		for (Element* cur = head; cur != NULL; cur = cur->next)	out << cur->inf << endl;
+	}
+};
+
+int main() {
+	DoubleLinkedList <string> l;
+	string word;
+	while (in >> word) {
+		l.InsertRight(l.GetLength(), word);
+	}
+	in.close();
+	int cnt = 0;
+	string key_word = l.Get(l.GetLength());
+	for (int i = 1; i <= l.GetLength() - 1;) {
+		if (l.Get(i) == word) { l.Remove(i); cnt++; }
+		else { i++; }
+	}
+	l.PrintLeftToRight();
+	out << "count: " << cnt << "\n";
+	out.close();
+	l.~DoubleLinkedList();
+	return 0;
+}
