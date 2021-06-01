@@ -1,0 +1,55 @@
+#include <iostream>     
+#include <algorithm>    
+#include <vector>  
+#include <iterator>
+#include <numeric>
+
+using namespace std;
+
+class Sound {
+private:
+	int height;
+	int time;
+public:
+	Sound() :height(0), time(0) {}
+	Sound(int x, int y) : height(x), time(y) {}
+	int Time() { return time; }
+	int Height() { return height; }
+	void Print() { cout << "Time " << Time() << " Height " << Height() << endl; }
+};
+
+int main() {
+	vector<Sound> melody;
+	int n, x, y, k;
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		cin >> x >> y;
+		melody.push_back(Sound(x, y));
+	}
+	cout << "Enter the number of note: ";
+	cin >> k;
+	while (k > n || k < 1) { 
+		cout << "Error" << endl; 
+		cout << "Enter the number of note: "; 
+		cin >> k; 
+	}
+	sort(melody.begin(), melody.end(), [](Sound s1, Sound s2) 
+	{return (s1.Time() > s2.Time()) || ((s1.Time() == s2.Time()) && (s1.Height() > s2.Height())); });
+
+	for (auto iter : melody) {
+		iter.Print();
+	}
+	cout << endl;
+	cout << "The note number " << k << ' ';
+	melody[k - 1].Print();
+	return 0;
+}
+
+/*6
+10 5
+1 2
+5 6
+7 8
+10 10
+1 8
+*/
