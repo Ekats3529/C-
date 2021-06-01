@@ -1,0 +1,127 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <iomanip>
+#include <vector>
+#include <list>
+
+using namespace std;
+
+ifstream in("input.txt");
+ofstream out("output.txt");
+
+class Student {
+    string name, surname, secname;
+    int group;
+
+public:
+    Student() : name(""), surname(""), secname(""), group(0) {}
+    Student(int g, string n, string s, string sec) :name(n), surname(s), secname(sec), group(g) {}
+    void Print() { out << group << " " << name << ' ' << surname << ' ' << secname <<  endl; }
+};
+
+vector<Student> s;
+
+int main()
+{
+    int n, gr;
+    string nam, sur, sec;
+    in >> n;
+    for (int i = 0; i < n; i++) {
+        in >> gr >> nam >> sur >> sec;
+        s.push_back(Student(gr, nam, sur, sec));
+    }
+    int k = n / 2;
+    out << "The first: ";
+    s[0].Print();
+    out << "The middle: ";
+    s[k].Print();
+    out << "The last: ";
+    s[n - 1].Print();
+    out << endl;
+
+    cout << "New student: ";
+    cin >> gr >> nam >> sur >> sec;
+    s.push_back(Student(gr, nam, sur, sec));
+    n += 1;
+
+    for (auto it : s) {
+        it.Print();
+    }
+
+    out << endl;
+    k = n / 2;
+    out << "The first: ";
+    s[0].Print();
+    out << "The middle: ";
+    s[k].Print();
+    out << "The last: ";
+    s[n - 1].Print();
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <iomanip>
+#include <list>
+
+using namespace std;
+
+ifstream in("input.txt");
+ofstream out("output.txt");
+
+class Student {
+    string name, surname, secname;
+    int group;
+
+public:
+    Student() : name(""), surname(""), secname(""), group(0) {}
+    Student(int g, string n, string s, string sec) :name(n), surname(s), secname(sec), group(g) {}
+    void Print() { out << group << " " << name << ' ' << surname << ' ' << secname <<  endl; }
+};
+
+list<Student> lst;
+
+int main()
+{
+    int n, gr, k;
+    string nam, sur, sec;
+    in >> n;
+    for (int i = 0; i < n; i++) {
+        in >> gr >> nam >> sur >> sec;
+        lst.push_back(Student(gr, nam, sur, sec));
+    }
+    cout << "Choose the student - enter the number: ";
+    cin >> k;
+    auto iter = lst.begin();
+    advance(iter, k - 1);
+    out << "Chosen student: ";
+    iter->Print();
+    out << endl;
+    cout << "New student: ";
+    cin >> gr >> nam >> sur >> sec;
+    lst.push_front(Student(gr, nam, sur, sec));
+    n += 1;
+
+    for (auto it : lst) {
+        it.Print();
+    }
+
+    return 0;
+}
+//177 Some Body Told
