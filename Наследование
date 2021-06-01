@@ -1,26 +1,170 @@
-#include <iostream>
-#include <fstream>
 #include <string>
-#include <algorithm>
-#include <iomanip>
+#include <iostream>
 using namespace std;
 
 class Software {
-    string inf;
-
+public:
+	virtual void Fill_in() = 0;
+	virtual void Show() = 0;
+	virtual void Conformity() = 0;
+	virtual bool Search(int d, int m, int y) = 0;
+	virtual string Show_name() = 0;
 };
-class FreeSoftware : Software {
-
+//int d, m, y
+class FreeSoftware : public Software {
+public:
+	string name;
+	string producer;
+	void Fill_in() {
+		cout << "FreeSoftware\n";
+		cout << "Enter name: ";
+		cin >> name;
+		cout << "Enter producer: ";
+		cin >> producer;
+		cout << endl;
+	}
+	void Show() {
+		cout << "Name - " << name << "; Producer - " << producer << endl << endl;
+	}
+	void Conformity() {
+		cout << "You can use the FreeSoftware\n\n";
+	}
+	bool Search(int day, int month, int year) {
+		return 1;
+	}
+	string Show_name() {
+		return name;
+	}
 };
-class SharewareSoftware : Software {
 
+class SharewareSoftware : public Software
+{
+public:
+	string name;
+	string producer;
+	short day;
+	short month;
+	int year;
+	int free_use_in_days;
+	void Fill_in() {
+		cout << "SharewareSoftware\n";
+		cout << "Enter name: ";
+		cin >> name;
+		cout << "Enter producer: ";
+		cin >> producer;
+		cout << "Enter date of installing: day mouth year ";
+		cin >> day >> month >> year;
+		cout << "Enter free use period (in days): ";
+		cin >> free_use_in_days;
+		cout << endl;
+	}
+	void Show() {
+		cout << "Name - " << name << "; Producer - " << producer << "; \nDate of installing - " << day << "." << month << "." << year << "\nTime of the free use in days - " << free_use_in_days << endl << endl;
+	}
+	void Conformity() {
+		int r, d, m, y;
+		cout << "Enter current date: day mouth year ";
+		cin >> d >> m >> y;
+		r = abs(y - year) * 12 * 30 + abs(m - month) * 30 + abs(d - day);
+		if (r > free_use_in_days)
+			cout << "Free use period expired\n\n ";
+		else cout << "You can use the SharewareSoftware\n\n";
+	}
+	bool Search(int d, int m, int y) {
+		int r;
+		r = abs(y - year) * 12 * 30 + abs(m - month) * 30 + abs(d - day);
+		if (r > free_use_in_days) {
+			return 0;
+		}
+		return 1;
+	}
+	string Show_name() {
+		return name;
+	}
 };
-class ProprietarySoftware : Software {
 
+
+class ProprietarySoftware : public SharewareSoftware {
+public:
+	string name;
+	string producer;
+	int cost;
+	short day;
+	short month;
+	int year;
+	int usage_time;
+	void Fill_in() {
+		cout << "ProprietarySoftware\n";
+		cout << "Enter name: ";
+		cin >> name;
+		cout << "Enter producer: ";
+		cin >> producer;
+		cout << "Enter date of installing: day mouth year ";
+		cin >> day >> month >> year;
+		cout << "Enter usage time (in days): ";
+		cin >> usage_time;
+		cout << endl;
+	}
+	void Show() {
+		cout << "Name - " << name << "; Producer - " << producer << "; \nDate of installing - " << day << "." << month << "." << year << "\nUsage time in days - " << usage_time << endl << endl;
+	}
+	void Conformity() {
+		int r, d, m, y;
+		cout << "Enter current date: day mouth year ";
+		cin >> d >> m >> y;
+		r = abs(y - year) * 12 * 30 + abs(m - month) * 30 + abs(d - day);
+		if (r > usage_time)
+			cout << "You must pay for the ProprietarySoftware!\n\n ";
+		else cout << "You can use the ProprietarySoftware\n\n";
+	}
+	bool Search(int d, int m, int y) {
+		int r;
+		r = abs(y - year) * 12 * 30 + abs(m - month) * 30 + abs(d - day);
+		if (r > usage_time) {
+			return 0;
+		}
+		return 1;
+	}
+	string Show_name() {
+		return name;
+	}
 };
+
 
 int main()
 {
-    
-    return 0;
+	Software* software[100];
+	int n;
+	string type;
+	cout << "Enter the number of types ";
+	cin >> n;
+	
+	for (int i = 0; i < n; i++, cout << "______________________________________________________________ \n\n") {
+		cout << "Enter the type of software: ";
+		cin >> type;
+		if (type == "FreeSoftware"){
+			software[i] = new FreeSoftware();
+		}
+		else if (type == "SharewareSoftware") {
+			software[i] = new SharewareSoftware();
+		}
+		else if (type == "ProprietarySoftware") {
+			software[i] = new ProprietarySoftware();
+		}
+		software[i]->Fill_in();
+	}
+	for (int i = 0; i < n; i++, cout << "______________________________________________________________ \n\n") {
+		software[i]->Show();
+		//software[i]->Conformity();
+	}
+	int day, month, year;
+	cout << "Enter current date ";
+	cin >> day >> month >> year;
+	cout << endl;
+	for (int i = 0; i < n; i++) {
+		if (software[i]->Search(day, month, year)) {
+			cout << "You can use " << software[i]->Show_name() << "\n";
+		}
+	}
+	return 0;
 }
