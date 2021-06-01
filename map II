@@ -1,0 +1,87 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <utility>
+#include <functional>
+#include <string>
+#include <iterator>
+#include <algorithm>
+using namespace std;
+
+
+ifstream in("input.txt");
+ofstream out("output.txt");
+
+class Author {
+private:
+    string name, surname;
+    int day, month, year;
+public:
+    Author(string n, string sur, int d, int m, int y): surname(sur), name(n), day(d), month(m), year(y) {}
+    friend bool operator< (const Author& lft, const Author& rgh);
+    void Print() { 
+        out << name << " " << surname << " дата рождения: " << day << " " << month
+            << " " << year << endl << endl;
+    }
+    string Surname() { return surname; }
+    
+};
+
+bool operator< (const Author& lft, const Author& rgh)
+{
+    return lft.surname < rgh.surname;
+}
+
+class Book {
+private:
+    string name;
+    int date;
+public:
+    Book(string n, int d) : name(n), date(d){}
+    void Print()  {out << name << " - дата издания: " << date << endl; }
+};
+
+int main()
+{
+    map<Author, vector<Book>> Library;
+    string nam, s, b;
+    int n, d, m, y, dat, k = 0;
+    in >> n;
+    for (int i = 0; i < n; i++) {
+        in >> nam >> s >> d >> m >> y >> b >> dat;
+        //cout << nam << s << d << m << y << b << dat;
+        Author temp = Author(nam, s, d, m, y);
+        //temp.Print();
+        
+        vector <Book> vec;
+        vec.push_back(Book(b, dat));
+        /*for (auto it : vec) {
+            it.Print();
+        }
+        */
+        if (!Library.count(temp)) {
+            Library.insert(make_pair(temp, vec));
+        }
+        else Library[Author(nam, s, d, m, y)].push_back(Book(b, dat));
+        vec.clear();
+    }
+    for (map<Author, vector<Book>>::iterator it = Library.begin(), itEnd = Library.end(); it != itEnd; ++it) {
+        //cout << 21 << endl;
+        Author writer = it->first;
+        vector<Book> collection = it->second;
+        writer.Print();
+        out << "The list of books: \n";
+        int k = 1;
+        for (auto iter : collection) {
+            out << k << ") ";
+            iter.Print();
+            k++;
+        }
+        out << endl;
+    }
+    return 0;
+}
