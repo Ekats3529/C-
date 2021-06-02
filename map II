@@ -8,6 +8,7 @@
 #include <utility>
 #include <functional>
 #include <string>
+#include <windows.h>
 #include <iterator>
 #include <algorithm>
 using namespace std;
@@ -21,6 +22,7 @@ private:
     string name, surname;
     int day, month, year;
 public:
+    Author():surname(""), name(""), day(0), month(0), year(0) {}
     Author(string n, string sur, int d, int m, int y): surname(sur), name(n), day(d), month(m), year(y) {}
     friend bool operator< (const Author& lft, const Author& rgh);
     void Print() { 
@@ -28,7 +30,12 @@ public:
             << " " << year << endl << endl;
     }
     string Surname() { return surname; }
-    
+    string Name() { return name; }
+    void Correct_Date(int d, int m, int y) {
+        this->day = d;
+        this->month = m;
+        this->year = y;
+    }
 };
 
 bool operator< (const Author& lft, const Author& rgh)
@@ -42,35 +49,78 @@ private:
     int date;
 public:
     Book(string n, int d) : name(n), date(d){}
-    void Print()  {out << name << " - дата издания: " << date << endl; }
-};
-
-int main()
-{
-    map<Author, vector<Book>> Library;
-    string nam, s, b;
-    int n, d, m, y, dat, k = 0;
-    in >> n;
-    for (int i = 0; i < n; i++) {
-        in >> nam >> s >> d >> m >> y >> b >> dat;
-        //cout << nam << s << d << m << y << b << dat;
-        Author temp = Author(nam, s, d, m, y);
-        //temp.Print();
-        
-        vector <Book> vec;
-        vec.push_back(Book(b, dat));
-        /*for (auto it : vec) {
-            it.Print();
-        }
-        */
-        if (!Library.count(temp)) {
-            Library.insert(make_pair(temp, vec));
-        }
-        else Library[Author(nam, s, d, m, y)].push_back(Book(b, dat));
-        vec.clear();
+    friend bool operator==(const Book& left, const Book& right);
+    void Print() {
+        out << name << " - дата издания: " << date << endl; 
     }
+    string Name() { return name; }
+};
+bool operator==(const Book& left, const Book& right) {
+    return left.name == right.name;
+}
+
+map<Author, vector<Book>> Library;
+
+
+void Change_date() {
+    string nam, s;
+    int d, m, y;
+    cout << "Enter the author: ";
+    cin >> nam >> s;
     for (map<Author, vector<Book>>::iterator it = Library.begin(), itEnd = Library.end(); it != itEnd; ++it) {
-        //cout << 21 << endl;
+        Author writer = it->first;
+        vector<Book> collection = it->second;
+        if (writer.Name() == nam && writer.Surname() == s) {
+            cout << "Enter the correct birth date: ";
+            cin >> d >> m >> y;
+            writer.Correct_Date(d, m, y);
+            Library.erase(it);
+            Library.insert(make_pair(writer, collection));
+            break;
+        }
+    } 
+}
+
+void Change_author() {
+    string name, author_s = "", author_n = "";
+    int d = 0, m = 0, y = 0;
+    Author changing = Author();
+    cout << "Enter the name of the book: ";
+    cin >> name;
+    for (map<Author, vector<Book>>::iterator it = Library.begin(), itEnd = Library.end(); it != itEnd; ++it) {
+        Author writer = it->first;
+        vector<Book> collection = it->second;
+        for (auto iter : collection) {
+            if (iter.Name() != name) {continue;}
+            cout << writer.Surname() << endl;
+            cout << "Enter the author and the date of birth: ";
+            cin >> author_n >> author_s >> d >> m >> y;
+            changing = Author(author_n, author_s, d, m, y);
+            vector <Book> vec;
+            vec.push_back(iter);
+            if (!Library.count(changing)) {
+                Library.insert(make_pair(changing, vec));
+            }
+            else Library[changing].push_back(iter);
+            collection.erase(remove(collection.begin(), collection.end(), iter), collection.end());
+            if (collection.empty()) {
+                Library.erase(it);
+            }
+            else {
+                Library.erase(it);
+                Library.insert(make_pair(writer, collection));
+            }   
+        }
+        if (d != 0) break;
+    }
+    if (d == 0) {
+        cout << "No equal book" << endl;
+    }
+
+}
+
+void Print_Library() {
+    for (map<Author, vector<Book>>::iterator it = Library.begin(), itEnd = Library.end(); it != itEnd; ++it) {
         Author writer = it->first;
         vector<Book> collection = it->second;
         writer.Print();
@@ -82,6 +132,44 @@ int main()
             k++;
         }
         out << endl;
+    }
+    out << "_____________________________________________________________________________" << endl << endl;
+}
+int main()
+{
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    setlocale(LC_ALL, "Russian");
+    string nam, s, b;
+    int n, d, m, y, dat, k = 0, move;
+    in >> n;
+    for (int i = 0; i < n; i++) {
+        in >> nam >> s >> d >> m >> y >> b >> dat;
+        Author temp = Author(nam, s, d, m, y);
+        vector <Book> vec;
+        vec.push_back(Book(b, dat));
+        if (!Library.count(temp)) {
+            Library.insert(make_pair(temp, vec));
+        }
+        else Library[Author(nam, s, d, m, y)].push_back(Book(b, dat));
+        vec.clear();
+    }
+    cout << "What do you want to do?\n";
+    cout << "Enter 1 if you want to change the author's date of birth \n";
+    cout << "Enter 2 if you want to change the author of book \n";
+    cout << "Enter 3 if you want to print library \n";
+    cout << "Enter 4 if you want to exit \n";
+    cin >> move;
+    while (move != 4) {
+        if (move == 1) { Change_date(); }
+        if (move == 2) { Change_author(); }
+        if (move == 3) { Print_Library(); }
+        cout << "What do you want to do?\n";
+        cout << "Enter 1 if you want to change the author's date of birth \n";
+        cout << "Enter 2 if you want to change the author of book \n";
+        cout << "Enter 3 if you want to print library \n";
+        cout << "Enter 4 if you want to exit \n";
+        cin >> move;
     }
     return 0;
 }
